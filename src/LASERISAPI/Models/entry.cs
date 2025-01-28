@@ -8,6 +8,7 @@ namespace LASERISAPI.Models
         public string? manufacturerName { get; set; }
         public string? description { get; set; }
         public string? serialNumber { get; set; }
+        public string? orderCode { get; set; }
         public string itemType { get; set; }
         public int quantity { get; set; }
 
