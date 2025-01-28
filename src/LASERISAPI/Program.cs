@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using LASERISAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDbContext<EntryDB>(options => options.UseInMemoryDatabase("items"));
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSwaggerGen(c =>
@@ -22,6 +25,6 @@ if (builder.Environment.IsDevelopment()) {
     });
 } // end of if (app.Environment.IsDevelopment()) block
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/entries", async (EntryDB db) => await db.Entries.ToListAsync());
 
 app.Run();

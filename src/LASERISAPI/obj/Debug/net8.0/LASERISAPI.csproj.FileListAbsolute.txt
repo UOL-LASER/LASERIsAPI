@@ -31,3 +31,6 @@
 /home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/obj/Debug/net8.0/LASERISAPI.csproj.AssemblyReference.cache
 /home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/obj/Debug/net8.0/LASERISAPI.MvcApplicationPartsAssemblyInfo.cs
 /home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/obj/Debug/net8.0/LASERISAPI.csproj.CopyComplete
+/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll
