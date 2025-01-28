@@ -3,9 +3,10 @@ using Microsoft.OpenApi.Models;
 using LASERISAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Entries") ?? "Data Source=Entries.db";
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<EntryDB>(options => options.UseInMemoryDatabase("items"));
+builder.Services.AddSqlite<EntryDB>(connectionString);
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSwaggerGen(c =>
