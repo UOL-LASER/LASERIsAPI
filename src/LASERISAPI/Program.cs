@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using LASERISAPI.Models;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Entries") ?? "Data Source=Entries.db";
@@ -33,6 +34,12 @@ app.MapGet("/entries/by-mname/{manufacturerName}", async (EntryDB db, String man
 app.MapGet("/entries/by-serialno/{serialNumber}", async (EntryDB db, String serialNumber) => await db.Entries.FindAsync(serialNumber));
 app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode) => await db.Entries.FindAsync(orderCode));
 app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.FindAsync(itemType));
+app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.FindAsync(quantity));
+app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.FindAsync(signedOutTo));
+app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.FindAsync(signedOutDate));
+
+
+
 
 app.MapPost("/entry", async (EntryDB db, Entry newEntry) =>
 {
@@ -53,6 +60,8 @@ app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
     findItem.orderCode = updateEntry.orderCode;
     findItem.itemType = updateEntry.itemType;
     findItem.quantity = updateEntry.quantity;
+    findItem.signedOutTo = updateEntry.signedOutTo;
+    findItem.signedOutDate = updateEntry.signedOutDate;
 
     await db.SaveChangesAsync();
     return Results.NoContent();

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -22,7 +23,9 @@ namespace LASERISAPI.Migrations
                     serialNumber = table.Column<string>(type: "TEXT", nullable: true),
                     orderCode = table.Column<string>(type: "TEXT", nullable: true),
                     itemType = table.Column<string>(type: "TEXT", nullable: false),
-                    quantity = table.Column<int>(type: "INTEGER", nullable: false)
+                    quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    signedOutTo = table.Column<string>(type: "TEXT", nullable: true),
+                    signedOutDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
