@@ -36,6 +36,7 @@ app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode)
 app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.FindAsync(itemType));
 app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.FindAsync(quantity));
 app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.FindAsync(signedOutTo));
+app.MapGet("/entries/by-signedouttoid/{signedOutToId}", async (EntryDB db, int signedOutToId) => await db.Entries.FindAsync(signedOutToId));
 app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.FindAsync(signedOutDate));
 
 
@@ -61,6 +62,7 @@ app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
     findItem.itemType = updateEntry.itemType;
     findItem.quantity = updateEntry.quantity;
     findItem.signedOutTo = updateEntry.signedOutTo;
+    findItem.signedOutToId = updateEntry.signedOutToId;
     findItem.signedOutDate = updateEntry.signedOutDate;
 
     await db.SaveChangesAsync();

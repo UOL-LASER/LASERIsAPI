@@ -13,6 +13,7 @@ namespace LASERISAPI.Models
         public string itemType { get; set; }
         public int quantity { get; set; }
         public string? signedOutTo { get; set; }
+        public int? signedOutToId { get; set; }
         public DateTime? signedOutDate { get; set; }
 
     }

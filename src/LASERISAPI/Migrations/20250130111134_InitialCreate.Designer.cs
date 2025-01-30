@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LASERISAPI.Migrations
 {
     [DbContext(typeof(EntryDB))]
-    [Migration("20250129112358_InitialCreate")]
+    [Migration("20250130111134_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace LASERISAPI.Migrations
 
                     b.Property<string>("signedOutTo")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("signedOutToId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("id");
 

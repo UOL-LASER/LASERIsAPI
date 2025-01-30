@@ -52,6 +52,9 @@ namespace LASERISAPI.Migrations
                     b.Property<string>("signedOutTo")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("signedOutToId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("id");
 
                     b.ToTable("Entries");

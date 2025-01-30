@@ -25,6 +25,7 @@ namespace LASERISAPI.Migrations
                     itemType = table.Column<string>(type: "TEXT", nullable: false),
                     quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     signedOutTo = table.Column<string>(type: "TEXT", nullable: true),
+                    signedOutToId = table.Column<int>(type: "INTEGER", nullable: true),
                     signedOutDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
