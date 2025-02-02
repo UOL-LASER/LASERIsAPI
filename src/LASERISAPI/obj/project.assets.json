@@ -3314,19 +3314,19 @@
     ]
   },
   "packageFolders": {
-    "/home/pa1yn/.nuget/packages/": {}
+    "C:\\Users\\peter\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/LASERISAPI.csproj",
+      "projectUniqueName": "C:\\Users\\peter\\Documents\\UOL\\COMP122\\UOL-COMP122-Assignment-2\\LASERIsAPI\\src\\LASERISAPI\\LASERISAPI.csproj",
       "projectName": "LASERISAPI",
-      "projectPath": "/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/LASERISAPI.csproj",
-      "packagesPath": "/home/pa1yn/.nuget/packages/",
-      "outputPath": "/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/obj/",
+      "projectPath": "C:\\Users\\peter\\Documents\\UOL\\COMP122\\UOL-COMP122-Assignment-2\\LASERIsAPI\\src\\LASERISAPI\\LASERISAPI.csproj",
+      "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\peter\\Documents\\UOL\\COMP122\\UOL-COMP122-Assignment-2\\LASERIsAPI\\src\\LASERISAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/pa1yn/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -3394,7 +3394,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

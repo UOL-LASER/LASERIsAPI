@@ -29,15 +29,16 @@ if (builder.Environment.IsDevelopment()) {
 
 app.MapGet("/entries", async (EntryDB db) => await db.Entries.ToListAsync());
 app.MapGet("/entries/by-id/{id}", async (EntryDB db, int id) => await db.Entries.FindAsync(id));
-app.MapGet("/entries/by-name/{name}", async (EntryDB db, String name) => await db.Entries.FindAsync(name));
-app.MapGet("/entries/by-mname/{manufacturerName}", async (EntryDB db, String manufacturerName) => await db.Entries.FindAsync(manufacturerName));
-app.MapGet("/entries/by-serialno/{serialNumber}", async (EntryDB db, String serialNumber) => await db.Entries.FindAsync(serialNumber));
-app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode) => await db.Entries.FindAsync(orderCode));
-app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.FindAsync(itemType));
-app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.FindAsync(quantity));
-app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.FindAsync(signedOutTo));
-app.MapGet("/entries/by-signedouttoid/{signedOutToId}", async (EntryDB db, int signedOutToId) => await db.Entries.FindAsync(signedOutToId));
-app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.FindAsync(signedOutDate));
+app.MapGet("/entries/by-name/{name}", async (EntryDB db, String name) => await db.Entries.Where(e => e.name.ToLower() == name.ToLower()).ToListAsync());
+app.MapGet("/entries/by-mname/{manufacturerName}", async (EntryDB db, String manufacturerName) => await db.Entries.Where(e => e.manufacturerName != null && e.manufacturerName.ToLower() == manufacturerName.ToLower()).ToListAsync());
+app.MapGet("/entries/by-serialno/{serialNumber}", async (EntryDB db, String serialNumber) => await db.Entries.Where(e => e.serialNumber != null && e.serialNumber.ToLower() == serialNumber.ToLower()).ToListAsync());
+app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode) => await db.Entries.Where(e => e.orderCode != null && e.orderCode.ToLower() == orderCode.ToLower()).ToListAsync());
+app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.Where(e => e.itemType.ToLower() == itemType.ToLower()).ToListAsync());
+app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.Where(e => e.quantity == quantity).ToListAsync());
+app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.Where(e => e.signedOutTo != null && e.signedOutTo.ToLower() == signedOutTo.ToLower()).ToListAsync());
+app.MapGet("/entries/by-signedouttoid/{signedOutToId}", async (EntryDB db, int signedOutToId) => await db.Entries.Where(e => e.signedOutToId != null && e.signedOutToId == signedOutToId).ToListAsync());
+app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.Where(e => e.signedOutDate != null && e.signedOutDate.Value.Date == signedOutDate.Date).ToListAsync());
+
 
 
 
@@ -54,16 +55,16 @@ app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
 
     var findItem = await db.Entries.FindAsync(id);
     if (findItem is null) return Results.NotFound();
-    findItem.name = updateEntry.name;
-    findItem.manufacturerName = updateEntry.manufacturerName;
-    findItem.description = updateEntry.description;
-    findItem.serialNumber = updateEntry.serialNumber;
-    findItem.orderCode = updateEntry.orderCode;
-    findItem.itemType = updateEntry.itemType;
-    findItem.quantity = updateEntry.quantity;
-    findItem.signedOutTo = updateEntry.signedOutTo;
-    findItem.signedOutToId = updateEntry.signedOutToId;
-    findItem.signedOutDate = updateEntry.signedOutDate;
+    findItem.name = updateEntry.name ?? findItem.name;
+    findItem.manufacturerName = updateEntry.manufacturerName ?? findItem.manufacturerName;
+    findItem.description = updateEntry.description ?? findItem.description;
+    findItem.serialNumber = updateEntry.serialNumber ?? findItem.serialNumber;
+    findItem.orderCode = updateEntry.orderCode ?? findItem.orderCode;
+    findItem.itemType = updateEntry.itemType ?? findItem.itemType;
+    findItem.quantity = updateEntry.quantity > 0 ? updateEntry.quantity : findItem.quantity;
+    findItem.signedOutTo = updateEntry.signedOutTo ?? findItem.signedOutTo;
+    findItem.signedOutToId = updateEntry.signedOutToId ?? findItem.signedOutToId;
+    findItem.signedOutDate = updateEntry.signedOutDate ?? findItem.signedOutDate;
 
     await db.SaveChangesAsync();
     return Results.NoContent();
