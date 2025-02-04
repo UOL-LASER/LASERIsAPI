@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LASERISAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f214d3005c6579d745bcb74542143b5e5a0f5516")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acc4c9e60901000279345d4f1259954a6f8260f7")]
 [assembly: System.Reflection.AssemblyProductAttribute("LASERISAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LASERISAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
