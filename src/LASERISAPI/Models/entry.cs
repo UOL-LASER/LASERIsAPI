@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 namespace LASERISAPI.Models 
 {
     public class Entry
@@ -11,6 +12,9 @@ namespace LASERISAPI.Models
         public string? orderCode { get; set; }
         public string itemType { get; set; }
         public int quantity { get; set; }
+        public string? signedOutTo { get; set; }
+        public int? signedOutToId { get; set; }
+        public DateTime? signedOutDate { get; set; }
 
     }
 
