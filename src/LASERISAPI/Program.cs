@@ -27,18 +27,67 @@ if (builder.Environment.IsDevelopment()) {
     });
 } // end of if (app.Environment.IsDevelopment()) block
 
-app.MapGet("/entries", async (EntryDB db) => await db.Entries.ToListAsync());
-app.MapGet("/entries/by-id/{id}", async (EntryDB db, int id) => await db.Entries.FindAsync(id));
-app.MapGet("/entries/by-name/{name}", async (EntryDB db, String name) => await db.Entries.Where(e => e.name.ToLower() == name.ToLower()).ToListAsync());
-app.MapGet("/entries/by-mname/{manufacturerName}", async (EntryDB db, String manufacturerName) => await db.Entries.Where(e => e.manufacturerName != null && e.manufacturerName.ToLower() == manufacturerName.ToLower()).ToListAsync());
-app.MapGet("/entries/by-serialno/{serialNumber}", async (EntryDB db, String serialNumber) => await db.Entries.Where(e => e.serialNumber != null && e.serialNumber.ToLower() == serialNumber.ToLower()).ToListAsync());
-app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode) => await db.Entries.Where(e => e.orderCode != null && e.orderCode.ToLower() == orderCode.ToLower()).ToListAsync());
-app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.Where(e => e.itemType.ToLower() == itemType.ToLower()).ToListAsync());
-app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.Where(e => e.quantity == quantity).ToListAsync());
-app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.Where(e => e.signedOutTo != null && e.signedOutTo.ToLower() == signedOutTo.ToLower()).ToListAsync());
-app.MapGet("/entries/by-signedouttoid/{signedOutToId}", async (EntryDB db, int signedOutToId) => await db.Entries.Where(e => e.signedOutToId != null && e.signedOutToId == signedOutToId).ToListAsync());
-app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.Where(e => e.signedOutDate != null && e.signedOutDate.Value.Date == signedOutDate.Date).ToListAsync());
+app.MapGet("/entries", async (EntryDB db, int? id, string? name, string? manufacturerName, string? serialNumber, string? orderCode, string? itemType, int? quantity, string? signedOutTo, int? signedOutToId, DateTime? signedOutDate ) => {
+    var query = db.Entries.AsQueryable();
+    
+    if (id.HasValue)
+    {
+        query = query.Where(entry => entry.id == id.Value);
+    }
 
+    if (!string.IsNullOrEmpty(name))
+    {
+        query = query.Where(entry => entry.name.Contains(name));
+    }
+
+    if (!string.IsNullOrEmpty(manufacturerName))
+    {
+        query = query.Where(entry => entry.manufacturerName.Contains(manufacturerName));
+    }
+
+    if (!string.IsNullOrEmpty(serialNumber))
+    {
+        query = query.Where(entry => entry.serialNumber.Contains(serialNumber));
+    }
+
+    if (!string.IsNullOrEmpty(orderCode))
+    {
+        query = query.Where(entry => entry.orderCode.Contains(orderCode));
+    }
+
+    if (!string.IsNullOrEmpty(itemType))
+    {
+        query = query.Where(entry => entry.itemType.Contains(itemType));
+    }
+
+    if(quantity.HasValue && (quantity.Value == 0 || quantity.Value == 1)) {
+        query = query.Where(entry => entry.quantity == quantity.Value);
+    }
+    else if(quantity.HasValue) {
+        query = query.Where(entry => entry.quantity > 1);
+    }
+
+
+    if (!string.IsNullOrEmpty(signedOutTo))
+    {
+        query = query.Where(entry => entry.signedOutTo.Contains(signedOutTo));
+    }
+
+    if (signedOutToId.HasValue)
+    {
+        query = query.Where(entry => entry.signedOutToId == signedOutToId.Value);
+    }
+
+    if (signedOutDate.HasValue)
+    {
+        query = query.Where(entry => entry.signedOutDate.HasValue && entry.signedOutDate.Value.Date == signedOutDate.Value.Date);
+    }
+
+    var results = await query.ToListAsync();
+    return Results.Ok(results);
+
+    
+});
 
 
 

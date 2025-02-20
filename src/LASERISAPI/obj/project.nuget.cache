@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Gbc40uSIvJ0=",
+  "dgSpecHash": "XyohmJ/hY08=",
   "success": true,
   "projectFilePath": "/home/pa1yn/Documents/GitHub/LASERIsAPI/src/LASERISAPI/LASERISAPI.csproj",
   "expectedPackageFiles": [
@@ -57,7 +57,8 @@
     "/home/pa1yn/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",
     "/home/pa1yn/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/pa1yn/.nuget/packages/system.text.json/9.0.1/system.text.json.9.0.1.nupkg.sha512",
-    "/home/pa1yn/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512"
+    "/home/pa1yn/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
+    "/home/pa1yn/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.1/microsoft.aspnetcore.app.ref.9.0.1.nupkg.sha512"
   ],
   "logs": []
 }
