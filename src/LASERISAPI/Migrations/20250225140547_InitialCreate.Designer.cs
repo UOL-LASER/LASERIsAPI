@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LASERISAPI.Migrations
 {
     [DbContext(typeof(EntryDB))]
-    [Migration("20250204162957_InitialCreate")]
+    [Migration("20250225140547_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,9 +26,6 @@ namespace LASERISAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("description")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("itemType")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -41,6 +38,15 @@ namespace LASERISAPI.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("orderCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("physicalDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("productDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("productLink")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("quantity")

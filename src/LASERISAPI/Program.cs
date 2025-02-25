@@ -106,7 +106,9 @@ app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
     if (findItem is null) return Results.NotFound();
     findItem.name = updateEntry.name ?? findItem.name;
     findItem.manufacturerName = updateEntry.manufacturerName ?? findItem.manufacturerName;
-    findItem.description = updateEntry.description ?? findItem.description;
+    findItem.productDescription = updateEntry.productDescription ?? findItem.productDescription;
+    findItem.physicalDescription = updateEntry.physicalDescription ?? findItem.physicalDescription;
+    findItem.productLink = updateEntry.productLink ?? findItem.productLink;
     findItem.serialNumber = updateEntry.serialNumber ?? findItem.serialNumber;
     findItem.orderCode = updateEntry.orderCode ?? findItem.orderCode;
     findItem.itemType = updateEntry.itemType ?? findItem.itemType;
