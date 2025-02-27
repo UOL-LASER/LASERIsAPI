@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LASERISAPI.Migrations
 {
     [DbContext(typeof(EntryDB))]
-    [Migration("20250225140547_InitialCreate")]
+    [Migration("20250226002324_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

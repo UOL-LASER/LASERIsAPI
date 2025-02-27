@@ -94,10 +94,51 @@ app.MapGet("/entries", async (EntryDB db, int? id, string? name, string? manufac
 
 app.MapPost("/entry", async (EntryDB db, Entry newEntry) =>
 {
-    await db.Entries.AddAsync(newEntry);
+    List<Entry> newEntries = new List<Entry>();
+    for(int i = 0; i < newEntry.quantity; i++) 
+    {
+        newEntries.Add(new Entry
+        {
+            name = newEntry.name,
+            manufacturerName = newEntry.manufacturerName,
+            productDescription = newEntry.productDescription,
+            physicalDescription = newEntry.physicalDescription,
+            productLink = newEntry.productLink,
+            orderCode = newEntry.orderCode,
+            itemType = newEntry.itemType,
+            quantity = 1
+        });
+    }
+    await db.Entries.AddRangeAsync(newEntries);
     await db.SaveChangesAsync();
-    return Results.Created($"/entry/{newEntry.id}", newEntry);
+    return Results.Created("/entry", newEntries.Select(entry => $"/entry/{entry.id}").ToList());
 });
+
+    app.MapPost("/entry/batch", async (EntryDB db, List<Entry> newEntries) =>
+    {
+        List<Entry> processedEntries = new List<Entry>();
+
+        foreach(Entry entry in newEntries) {
+            for(int i = 0; i < entry.quantity; i++) 
+                {
+                    processedEntries.Add(new Entry
+                    {
+                        name = entry.name,
+                        manufacturerName = entry.manufacturerName,
+                        productDescription = entry.productDescription,
+                        physicalDescription = entry.physicalDescription,
+                        productLink = entry.productLink,
+                        orderCode = entry.orderCode,
+                        itemType = entry.itemType,
+                        quantity = 1
+                    });
+                }
+            }
+        await db.Entries.AddRangeAsync(processedEntries);
+        await db.SaveChangesAsync();
+        return Results.Created("/entry/batch", processedEntries.Select(entry => $"/entry/{entry.id}").ToList());
+    });
+
 
 app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
 {
