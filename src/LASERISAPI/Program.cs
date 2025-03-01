@@ -27,28 +27,118 @@ if (builder.Environment.IsDevelopment()) {
     });
 } // end of if (app.Environment.IsDevelopment()) block
 
-app.MapGet("/entries", async (EntryDB db) => await db.Entries.ToListAsync());
-app.MapGet("/entries/by-id/{id}", async (EntryDB db, int id) => await db.Entries.FindAsync(id));
-app.MapGet("/entries/by-name/{name}", async (EntryDB db, String name) => await db.Entries.Where(e => e.name.ToLower() == name.ToLower()).ToListAsync());
-app.MapGet("/entries/by-mname/{manufacturerName}", async (EntryDB db, String manufacturerName) => await db.Entries.Where(e => e.manufacturerName != null && e.manufacturerName.ToLower() == manufacturerName.ToLower()).ToListAsync());
-app.MapGet("/entries/by-serialno/{serialNumber}", async (EntryDB db, String serialNumber) => await db.Entries.Where(e => e.serialNumber != null && e.serialNumber.ToLower() == serialNumber.ToLower()).ToListAsync());
-app.MapGet("/entries/by-oCode/{orderCode}", async (EntryDB db, String orderCode) => await db.Entries.Where(e => e.orderCode != null && e.orderCode.ToLower() == orderCode.ToLower()).ToListAsync());
-app.MapGet("/entries/by-type/{itemType}", async (EntryDB db, String itemType) => await db.Entries.Where(e => e.itemType.ToLower() == itemType.ToLower()).ToListAsync());
-app.MapGet("/entries/by-quantity/{quantity}", async (EntryDB db, int quantity) => await db.Entries.Where(e => e.quantity == quantity).ToListAsync());
-app.MapGet("/entries/by-signedoutto/{signedOutTo}", async (EntryDB db, String signedOutTo) => await db.Entries.Where(e => e.signedOutTo != null && e.signedOutTo.ToLower() == signedOutTo.ToLower()).ToListAsync());
-app.MapGet("/entries/by-signedouttoid/{signedOutToId}", async (EntryDB db, int signedOutToId) => await db.Entries.Where(e => e.signedOutToId != null && e.signedOutToId == signedOutToId).ToListAsync());
-app.MapGet("/entries/by-signedoutdate/{signedOutDate}", async (EntryDB db, DateTime signedOutDate) => await db.Entries.Where(e => e.signedOutDate != null && e.signedOutDate.Value.Date == signedOutDate.Date).ToListAsync());
+app.MapGet("/entries", async (EntryDB db, int? id, string? name, string? manufacturerName, string? serialNumber, string? orderCode, string? itemType, int? quantity, string? signedOutTo, int? signedOutToId, DateTime? signedOutDate ) => {
+    var query = db.Entries.AsQueryable();
+    
+    if (id.HasValue)
+    {
+        query = query.Where(entry => entry.id == id.Value);
+    }
 
+    if (!string.IsNullOrEmpty(name))
+    {
+        query = query.Where(entry => entry.name.Contains(name));
+    }
+
+    if (!string.IsNullOrEmpty(manufacturerName))
+    {
+        query = query.Where(entry => entry.manufacturerName.Contains(manufacturerName));
+    }
+
+    if (!string.IsNullOrEmpty(serialNumber))
+    {
+        query = query.Where(entry => entry.serialNumber.Contains(serialNumber));
+    }
+
+    if (!string.IsNullOrEmpty(orderCode))
+    {
+        query = query.Where(entry => entry.orderCode.Contains(orderCode));
+    }
+
+    if (!string.IsNullOrEmpty(itemType))
+    {
+        query = query.Where(entry => entry.itemType.Contains(itemType));
+    }
+
+    if(quantity.HasValue && (quantity.Value == 0 || quantity.Value == 1)) {
+        query = query.Where(entry => entry.quantity == quantity.Value);
+    }
+    else if(quantity.HasValue) {
+        query = query.Where(entry => entry.quantity > 1);
+    }
+
+
+    if (!string.IsNullOrEmpty(signedOutTo))
+    {
+        query = query.Where(entry => entry.signedOutTo.Contains(signedOutTo));
+    }
+
+    if (signedOutToId.HasValue)
+    {
+        query = query.Where(entry => entry.signedOutToId == signedOutToId.Value);
+    }
+
+    if (signedOutDate.HasValue)
+    {
+        query = query.Where(entry => entry.signedOutDate.HasValue && entry.signedOutDate.Value.Date == signedOutDate.Value.Date);
+    }
+
+    var results = await query.ToListAsync();
+    return Results.Ok(results);
+
+    
+});
 
 
 
 
 app.MapPost("/entry", async (EntryDB db, Entry newEntry) =>
 {
-    await db.Entries.AddAsync(newEntry);
+    List<Entry> newEntries = new List<Entry>();
+    for(int i = 0; i < newEntry.quantity; i++) 
+    {
+        newEntries.Add(new Entry
+        {
+            name = newEntry.name,
+            manufacturerName = newEntry.manufacturerName,
+            productDescription = newEntry.productDescription,
+            physicalDescription = newEntry.physicalDescription,
+            productLink = newEntry.productLink,
+            orderCode = newEntry.orderCode,
+            itemType = newEntry.itemType,
+            quantity = 1
+        });
+    }
+    await db.Entries.AddRangeAsync(newEntries);
     await db.SaveChangesAsync();
-    return Results.Created($"/entry/{newEntry.id}", newEntry);
+    return Results.Created("/entry", newEntries.Select(entry => $"/entry/{entry.id}").ToList());
 });
+
+    app.MapPost("/entry/batch", async (EntryDB db, List<Entry> newEntries) =>
+    {
+        List<Entry> processedEntries = new List<Entry>();
+
+        foreach(Entry entry in newEntries) {
+            for(int i = 0; i < entry.quantity; i++) 
+                {
+                    processedEntries.Add(new Entry
+                    {
+                        name = entry.name,
+                        manufacturerName = entry.manufacturerName,
+                        productDescription = entry.productDescription,
+                        physicalDescription = entry.physicalDescription,
+                        productLink = entry.productLink,
+                        orderCode = entry.orderCode,
+                        itemType = entry.itemType,
+                        quantity = 1
+                    });
+                }
+            }
+        await db.Entries.AddRangeAsync(processedEntries);
+        await db.SaveChangesAsync();
+        return Results.Created("/entry/batch", processedEntries.Select(entry => $"/entry/{entry.id}").ToList());
+    });
+
 
 app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
 {
@@ -57,7 +147,9 @@ app.MapPut("/entry/{id}", async (EntryDB db, Entry updateEntry, int id) =>
     if (findItem is null) return Results.NotFound();
     findItem.name = updateEntry.name ?? findItem.name;
     findItem.manufacturerName = updateEntry.manufacturerName ?? findItem.manufacturerName;
-    findItem.description = updateEntry.description ?? findItem.description;
+    findItem.productDescription = updateEntry.productDescription ?? findItem.productDescription;
+    findItem.physicalDescription = updateEntry.physicalDescription ?? findItem.physicalDescription;
+    findItem.productLink = updateEntry.productLink ?? findItem.productLink;
     findItem.serialNumber = updateEntry.serialNumber ?? findItem.serialNumber;
     findItem.orderCode = updateEntry.orderCode ?? findItem.orderCode;
     findItem.itemType = updateEntry.itemType ?? findItem.itemType;
